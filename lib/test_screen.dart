@@ -15,34 +15,43 @@ class TestScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () async {
-                box = await Hive.openBox("testGet"); // open box
-                print("testGet is opened");
+                await Hive.openBox("testDelete");
+                print("testDelete");
               },
               child: Text("Open Box"),
             ),
             SizedBox(height: 20),
-
-            // ElevatedButton(
-            //   onPressed: () {
-            //     box.putAll({"name": "dod", "age": 19, "localization": "Egypt"});
-            //   },
-            //   child: Text("Accept Box"),
-            // ),
-            SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // box.add("lotfi");
-                // box.add("Dod");
-                // print("lotfi is added");
+              onPressed: () async {
+                await Hive.box("testDelete").putAll({
+                  "name": "lotfi",
+                  "age": 19,
+                  "country": "Egypt",
+                  "city": "New York",
+                });
               },
               child: Text("add data"),
+            ),
+
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () async {
+                Hive.box("testDelete").delete("country");
+                // Hive.box("testDelete").deleteAll({"age", "country"});
+                // Hive.box("testDelete").deleteAt(1);
+                // await Hive.box("testDelete").clear(); // delete all keys
+                // await Hive.box("testDelete").deleteFromDisk(); // delete from local storage
+              },
+              child: Text("Delete data"),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                print(box.get(0));
-                print(box.getAt(0));
-                print(box.values.toList());
+                print("name :${Hive.box("testDelete").get("name")}");
+                print("age :${Hive.box("testDelete").get("age")}");
+
+                print("country :${Hive.box("testDelete").get("country")}");
+                print("city :${Hive.box("testDelete").get("city")}");
               },
               child: Text("Display"),
             ),
