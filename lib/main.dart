@@ -1,3 +1,4 @@
+import 'package:apply_hive_course/person_class/person_type_adapter.dart';
 import 'package:apply_hive_course/test_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -5,6 +6,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+  Hive.registerAdapter(PersonTypeAdapter()); // type adapter manually
   runApp(const MyApp());
 }
 

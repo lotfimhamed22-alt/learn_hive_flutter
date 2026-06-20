@@ -1,10 +1,11 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: unused_element, avoid_print, must_be_immutable
+import 'package:apply_hive_course/person_class/person_class.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class TestScreen extends StatelessWidget {
   TestScreen({super.key});
-  late Box box;
+  late final Box box;
 
   @override
   Widget build(BuildContext context) {
@@ -15,49 +16,48 @@ class TestScreen extends StatelessWidget {
           children: [
             ElevatedButton(
               onPressed: () async {
-                await Hive.openBox("testDelete");
-                print("testDelete");
+                box = await Hive.openBox("testBox");
+                print("testBox");
               },
               child: Text("Open Box"),
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                await Hive.box("testDelete").putAll({
-                  "name": "lotfi",
-                  "age": 19,
-                  "country": "Egypt",
-                  "city": "New York",
-                });
+              onPressed: () {
+                box.put("test", getPerson());
               },
               child: Text("add data"),
             ),
 
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                Hive.box("testDelete").delete("country");
-                // Hive.box("testDelete").deleteAll({"age", "country"});
-                // Hive.box("testDelete").deleteAt(1);
-                // await Hive.box("testDelete").clear(); // delete all keys
-                // await Hive.box("testDelete").deleteFromDisk(); // delete from local storage
-              },
-              child: Text("Delete data"),
-            ),
+            ElevatedButton(onPressed: () {}, child: Text("Delete data")),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                print("name :${Hive.box("testDelete").get("name")}");
-                print("age :${Hive.box("testDelete").get("age")}");
-
-                print("country :${Hive.box("testDelete").get("country")}");
-                print("city :${Hive.box("testDelete").get("city")}");
+                PersonClass person = box.get("test");
+                print(person.name);
+                print(person.age);
+                print(person.friends[0].name);
               },
               child: Text("Display"),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  PersonClass getPerson() {
+    return PersonClass(
+      name: "lotfi",
+      age: 19,
+      friends: [
+        PersonClass(
+          name: "Dod",
+          age: 19,
+          friends: [PersonClass(name: "Lol", age: 19, friends: [])],
+        ),
+      ],
     );
   }
 }
